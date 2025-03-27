@@ -1,4 +1,6 @@
 using authJWT.Data;
+using authJWT.Services.AuthService;
+using authJWT.Services.PasswordService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IAuthInterface, AuthService>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
