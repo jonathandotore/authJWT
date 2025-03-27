@@ -5,6 +5,8 @@ namespace authJWT.Services.AuthService
 {
     public interface IAuthInterface
     {
-        public Task<Response<UserRegisterDto>> UserRegister(UserRegisterDto userRegister);
+        Task<Response<UserRegisterDto>> UserRegister(UserRegisterDto userRegister);
+
+        Task<Response<string>> UserLogin(UserLoginDto userLogin);
     }
 }

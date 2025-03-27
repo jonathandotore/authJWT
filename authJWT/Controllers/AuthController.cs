@@ -17,7 +17,14 @@ namespace authJWT.Controllers
             _authIterface = authIterface;
         }
 
-        [HttpPost]
+        [HttpPost("login")]
+        public async Task<ActionResult> Login(UserLoginDto userLogin)
+        {
+            var response = await _authIterface.UserLogin(userLogin);
+            return Ok(response);
+        }
+
+        [HttpPost("register")]
         public async Task<ActionResult> Register(UserRegisterDto userRegister)
         {
             var response = await _authIterface.UserRegister(userRegister);

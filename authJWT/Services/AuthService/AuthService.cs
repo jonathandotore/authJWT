@@ -63,6 +63,46 @@ namespace authJWT.Services.AuthService
 
         }
 
+        public async Task<Response<string>> UserLogin (UserLoginDto userLogin)
+        {
+            Response<string> response = new Response<string>();
+
+            try
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(user => user.Email == userLogin.Email);
+
+                if (user == null)
+                {
+                    response.Data = null;
+                    response.Message = "Username is invalid!";
+                    response.Status = false;
+                    return response;
+                }
+
+                if (!_password.PasswordChecker(userLogin.Password, user.SenhaHash, user.SenhaSalt))
+                {
+                    response.Data = null;
+                    response.Message = "The entered password is invalid!";
+                    return response;
+                }
+
+                var token = _password.CreateToken(user);
+
+                response.Data = token;
+                response.Message = "Login sucessfully!";
+                response.Status = true;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Data = null;
+                response.Message = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+
         public bool CheckUserAndEmail(UserRegisterDto userRegister)
         {
             var user = _context.Users.FirstOrDefault(user => user.Email == userRegister.Email || user.Username == userRegister.Username);
